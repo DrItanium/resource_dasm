@@ -298,8 +298,8 @@ int main(int argc, char** argv) {
         background_ppat = &background_ppat_cache.at(room->background_ppat_id);
       } catch (const out_of_range&) {
         try {
-          background_ppat = &background_ppat_cache.emplace(room->background_ppat_id,
-              rf.decode_ppat(room->background_ppat_id).first).first->second;
+            auto tempid = room->background_ppat_id;
+          background_ppat = &background_ppat_cache.emplace(tempid, rf.decode_ppat(room->background_ppat_id).first).first->second;
         } catch (const exception& e) {
           fprintf(stderr, "warning: room %hd uses ppat %hd but it can\'t be decoded (%s)\n",
               room_id, room->background_ppat_id, e.what());

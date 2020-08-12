@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include <vector>
+#include <stdexcept>
 
 using namespace std;
 

@@ -17,6 +17,7 @@
 #include <stdexcept>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 #include "audio_codecs.hh"
 #include "quickdraw_formats.hh"
@@ -2531,7 +2532,7 @@ string ResourceFile::decode_Tune(int16_t id, uint32_t type) {
 ////////////////////////////////////////////////////////////////////////////////
 // string decoding
 
-static vector<const string> mac_roman_table({
+static vector<string> mac_roman_table({
   // 00
   // note: we intentionally incorrectly decode \r as \n here to convert CR line
   // breaks to LF line breaks which modern systems use
@@ -2601,7 +2602,7 @@ static vector<const string> mac_roman_table({
   "\xC2\xB8", "\xCB\x9D", "\xCB\x9B", "\xCB\x87",
 });
 
-static vector<const string> mac_roman_table_rtf({
+static vector<string> mac_roman_table_rtf({
   // 00
   // note: we intentionally incorrectly decode \r as \n here to convert CR line
   // breaks to LF line breaks which modern systems use

@@ -2,6 +2,7 @@
 #include <phosg/Image.hh>
 #include <phosg/Strings.hh>
 #include <stdexcept>
+#include <cstring>
 
 #include "resource_fork.hh"
 

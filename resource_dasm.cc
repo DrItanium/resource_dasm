@@ -13,6 +13,7 @@
 #include <phosg/Strings.hh>
 #include <unordered_map>
 #include <vector>
+#include <algorithm>
 
 #include "resource_fork.hh"
 

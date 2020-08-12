@@ -1,6 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cmath>
 
 #include <phosg/Encoding.hh>
 #include <phosg/Image.hh>
@@ -173,8 +174,8 @@ Options:\n\
   size_t pixel_count = (data.size() * 8) / bits_for_format(color_format);
 
   if (w == 0 && h == 0) {
-    double z = sqrt(pixel_count);
-    if (z != floor(z)) {
+    double z = std::sqrt(pixel_count);
+    if (z != std::floor(z)) {
       w = z + 1;
     } else {
       w = z;

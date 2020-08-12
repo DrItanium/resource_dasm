@@ -1,5 +1,6 @@
 #include <inttypes.h>
-#include <stdlib.h>
+#include <cstdlib>
+#include <cstring>
 
 #include <phosg/Encoding.hh>
 #include <phosg/Filesystem.hh>

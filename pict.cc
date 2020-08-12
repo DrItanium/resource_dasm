@@ -95,7 +95,7 @@ struct pict_region {
   // note: unlike most of the others, this struct does not represent the actual
   // structure used in pict files, but is instead an interpretation thereof. use
   // the StringReader constructor instead of directly reading these.
-  rect rect;
+  rect _rect;
   unordered_set<int32_t> inversions;
 
   pict_region(StringReader& r) {
@@ -109,8 +109,8 @@ struct pict_region {
       throw runtime_error("region size is not even");
     }
 
-    this->rect = r.get<struct rect>();
-    this->rect.byteswap();
+    this->_rect = r.get<rect>();
+    this->_rect.byteswap();
 
     while (r.where() < start_offset + size) {
       int16_t y = r.get_u16r();
@@ -144,16 +144,16 @@ struct pict_region {
       return Image(0, 0);
     }
 
-    Image ret(this->rect.width(), this->rect.height());
+    Image ret(this->_rect.width(), this->_rect.height());
     ret.clear(0xFF, 0xFF, 0xFF);
     // TODO: this works but is quadratic; we can definitely do better. probably
     // something like propagating xors down and to the right as we work would
     // eliminate a lot of extra overwrites
-    for (size_t y = 0; y < this->rect.height(); y++) {
-      for (size_t x = 0; x < this->rect.width(); x++) {
-        if (this->is_inversion_point(x + this->rect.x1, y + this->rect.y1)) {
-          for (size_t yy = y; yy < this->rect.height(); yy++) {
-            for (size_t xx = x; xx < this->rect.width(); xx++) {
+    for (size_t y = 0; y < this->_rect.height(); y++) {
+      for (size_t x = 0; x < this->_rect.width(); x++) {
+        if (this->is_inversion_point(x + this->_rect.x1, y + this->_rect.y1)) {
+          for (size_t yy = y; yy < this->_rect.height(); yy++) {
+            for (size_t xx = x; xx < this->_rect.width(); xx++) {
               uint64_t r;
               ret.read_pixel(xx, yy, &r, NULL, NULL);
               ret.write_pixel(xx, yy, r ^ 0xFF, r ^ 0xFF, r ^ 0xFF);
@@ -364,7 +364,7 @@ static void unimplemented_opcode(StringReader& r, pict_render_state& st, uint16_
 
 static void set_clipping_region(StringReader& r, pict_render_state& st, uint16_t opcode) {
   pict_region rgn(r);
-  st.clip_rect = rgn.rect;
+  st.clip_rect = rgn._rect;
   st.clip_region_mask = rgn.render();
 }
 
@@ -710,7 +710,7 @@ static shared_ptr<Image> read_mask_region(StringReader& r, const rect& dest_rect
     throw runtime_error(string_printf("mask region dimensions (%zux%zu) do not match dest %s",
         mask_region->get_width(), mask_region->get_height(), dest_s.c_str()));
   }
-  mask_rect = rgn.rect;
+  mask_rect = rgn._rect;
   return mask_region;
 }
 
